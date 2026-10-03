@@ -32,131 +32,95 @@ export function Seniors() {
   }, [user]);
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+    <div className="max-w-5xl mx-auto py-6 px-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold text-ink-900 mb-2">Alumni Network</h1>
-          <p className="text-ink-600">Connect with alumni for guidance and mentorship.</p>
+          <h1 className="text-2xl font-bold text-black uppercase">Alumni Network</h1>
+          <p className="text-black text-sm">Connect with alumni for guidance and mentorship.</p>
         </div>
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="bg-surface/40 backdrop-blur-xl border border-ink-900/5 rounded-3xl p-6 animate-pulse">
-              <div className="flex gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-ink-900/10"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="bg-white border-2 border-black p-5 animate-pulse">
+              <div className="flex gap-4 mb-4">
+                <div className="w-12 h-12 rounded-none bg-gray-200 border-2 border-black"></div>
                 <div className="flex-1 space-y-2 mt-1">
-                  <div className="w-24 h-5 rounded bg-ink-900/10"></div>
-                  <div className="w-20 h-4 rounded bg-ink-900/10"></div>
+                  <div className="w-24 h-5 bg-gray-200"></div>
+                  <div className="w-20 h-4 bg-gray-200"></div>
                 </div>
               </div>
-              <div className="space-y-4 mb-6">
-                <div className="flex gap-3">
-                  <div className="w-4 h-4 rounded bg-ink-900/10"></div>
-                  <div className="flex-1 space-y-2">
-                    <div className="w-24 h-4 rounded bg-ink-900/10"></div>
-                    <div className="w-16 h-3 rounded bg-ink-900/10"></div>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <div className="w-4 h-4 rounded bg-ink-900/10"></div>
-                  <div className="w-32 h-4 rounded bg-ink-900/10"></div>
-                </div>
+              <div className="space-y-3">
+                <div className="w-full h-4 bg-gray-200"></div>
+                <div className="w-2/3 h-4 bg-gray-200"></div>
               </div>
-              <div className="w-full h-11 rounded-xl bg-ink-900/10"></div>
             </div>
           ))}
         </div>
       ) : sortedSeniors.length === 0 ? (
-        <div className="text-center py-16 bg-surface/40 backdrop-blur-xl border border-ink-900/5 rounded-3xl">
-          <div className="flex justify-center mb-6">
-            <motion.div
-              animate={{ y: [-10, 10, -10] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-32 h-32"
-            >
-              <div className="absolute inset-0 bg-purple-500/20 rounded-full flex items-center justify-center">
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <UserSquare2 className="w-12 h-12 text-purple-500" />
-                </motion.div>
-              </div>
-              <motion.div 
-                animate={{ scale: [0, 1, 0], opacity: [0, 1, 0], y: [0, -20, 0] }} 
-                transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                className="absolute right-0 top-0 w-8 h-8 bg-surface/40 backdrop-blur-xl border border-ink-900/10 rounded-full flex items-center justify-center shadow-sm"
-              >
-                <span className="text-[10px]">👋</span>
-              </motion.div>
-            </motion.div>
-          </div>
-          <h3 className="font-display text-xl font-bold text-ink-900 mb-2">No alumni found</h3>
-          <p className="text-ink-600 max-w-sm mx-auto mb-6">We couldn't find any alumni matching your criteria.</p>
+        <div className="bg-white border-2 border-black p-8 text-center my-6">
+          <h3 className="font-bold text-lg text-black uppercase mb-2">FILE NOT FOUND</h3>
+          <p className="text-sm text-gray-600 max-w-sm mx-auto font-medium">
+            Alumni mentors for this college are currently not registered. Available soon!
+          </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sortedSeniors.map((senior, idx) => (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: idx * 0.1 }}
+            <div
               key={senior.id}
-              className="bg-surface/40 backdrop-blur-xl border border-ink-900/5 rounded-3xl p-6 hover:border-brand-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group"
+              className="bg-white border-2 border-black p-5 flex flex-col hover:bg-gray-50 transition-colors relative"
             >
               {senior.collegeId === user?.collegeId && (
-                <div className="absolute top-0 right-0 bg-brand-500 text-surface text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">
+                <div className="absolute top-2 right-2 bg-black text-white text-[9px] font-bold uppercase px-2 py-0.5">
                   {senior.departmentId === user?.departmentId ? 'Your Dept' : 'Your College'}
                 </div>
               )}
 
-              <div className="flex justify-between items-start mb-6">
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 font-display font-bold text-lg">
-                    {senior.name.charAt(0)}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 border-2 border-black flex items-center justify-center text-black font-bold text-lg bg-gray-50">
+                  {senior.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="flex items-center gap-1">
+                    <h3 className="font-bold text-base text-black uppercase">{senior.name}</h3>
+                    {senior.verified && <CheckCircle2 className="w-4 h-4 text-blue-500" />}
                   </div>
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="font-display font-bold text-lg text-ink-900">{senior.name}</h3>
-                      {senior.verified && <CheckCircle2 className="w-4 h-4 text-blue-500" aria-label="Verified Alumni" />}
-                    </div>
-                    <p className="text-sm text-ink-500">Class of {senior.graduationYear}</p>
-                  </div>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase">Class of {senior.graduationYear}</p>
                 </div>
               </div>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <Briefcase className="w-4 h-4 text-ink-400 mt-0.5" />
+              <div className="space-y-2 mb-4">
+                <div className="flex items-start gap-2 text-xs">
+                  <Briefcase className="w-4 h-4 text-black shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-semibold text-ink-900">{senior.role}</p>
-                    <p className="text-xs text-ink-500">at {senior.company}</p>
+                    <p className="font-bold text-black uppercase">{senior.role}</p>
+                    <p className="text-gray-500">at {senior.company}</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <GraduationCap className="w-4 h-4 text-ink-400 mt-0.5" />
-                  <p className="text-sm text-ink-700">{senior.department}</p>
+                <div className="flex items-start gap-2 text-xs">
+                  <GraduationCap className="w-4 h-4 text-black shrink-0 mt-0.5" />
+                  <p className="text-gray-600 font-medium">{senior.department}</p>
                 </div>
               </div>
 
               {senior.mentorshipAvailable ? (
                 <button 
                   onClick={() => alert(`Opening booking calendar for ${senior.name}...`)}
-                  className="w-full py-2.5 bg-ink-900 text-surface text-sm font-medium rounded-xl hover:bg-ink-800 transition-colors"
+                  className="w-full py-2 bg-black text-white text-[10px] font-bold uppercase hover:bg-gray-800 transition-colors"
                 >
                   Book a 15-min chat
                 </button>
               ) : (
                 <button 
                   disabled
-                  className="w-full py-2.5 bg-paper text-ink-500 border border-ink-900/5 text-sm font-medium rounded-xl cursor-not-allowed"
+                  className="w-full py-2 bg-gray-100 text-gray-400 border border-gray-200 text-[10px] font-bold uppercase cursor-not-allowed"
                 >
                   Mentorship Unavailable
                 </button>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
       )}

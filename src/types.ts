@@ -24,6 +24,7 @@ export interface PyqDocument {
   tags: string[];
   collegeId?: string;
   departmentId?: string;
+  downloadUrl?: string;
 }
 
 export interface RoomListing {
@@ -39,6 +40,8 @@ export interface RoomListing {
   verified: boolean;
   ownerName: string;
   imageUrls: string[];
+  collegeId?: string;
+  redirectUrl?: string;
 }
 
 export interface RoommateProfile {

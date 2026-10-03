@@ -31,8 +31,8 @@ import { useSEO } from '../hooks/useSEO';
 
 export function Landing() {
   useSEO({
-    title: 'Yaha Khoj - Delhi\'s Premier Student Ecosystem & Startup Platform',
-    description: 'Yaha Khoj is a premier Delhi-based student startup platform helping students with college PYQs, study notes, alumni networks, finding rooms, roommates, and city guides.',
+    title: 'Yaha Khoj - India\'s Premier Student Platform & University Network',
+    description: 'Yaha Khoj is India\'s premier student platform helping college students with university PYQs, study notes, alumni networks, finding rooms & PGs, roommates, and campus guides across 25+ top colleges.',
   });
   const { user } = useUser();
   const navigate = useNavigate();
@@ -540,7 +540,7 @@ export function Landing() {
             </h2>
           </motion.div>
 
-          {/* 4 Connected Step Cards Grid: Yellow Rectangular Cards */}
+          {/* 4 Connected Step Cards Grid: Black Rectangular Cards with White Text */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -551,11 +551,11 @@ export function Landing() {
             {howItWorksSteps.map((item, idx) => (
               <div
                 key={item.step}
-                className="relative bg-yellow-400 rounded-none p-3 lg:p-4 border-2 border-black flex flex-col justify-between shadow-md text-slate-900 group"
+                className="relative bg-black rounded-none p-3 lg:p-4 border-2 border-zinc-800 flex flex-col justify-between shadow-md text-white group"
               >
                 {/* Horizontal Arrow between cards on desktop */}
                 {idx < howItWorksSteps.length - 1 && (
-                  <div className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-none bg-black border border-white text-white items-center justify-center shadow-md">
+                  <div className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-none bg-yellow-400 border border-black text-black items-center justify-center shadow-md">
                     <ArrowRight className="w-2.5 h-2.5 stroke-[2.5]" />
                   </div>
                 )}
@@ -563,13 +563,13 @@ export function Landing() {
                 <div>
                   {/* Normal Step Number at Top */}
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[9px] font-bold text-black tracking-wider uppercase">
+                    <span className="text-[9px] font-bold text-yellow-400 tracking-wider uppercase">
                       Step {item.step}
                     </span>
                   </div>
 
                   {/* Rectangular Image Thumbnail - Simple HTML Box */}
-                  <div className="w-full aspect-[16/9] rounded-none overflow-hidden mb-2.5 bg-yellow-100 border border-black/30 relative flex items-center justify-center">
+                  <div className="w-full aspect-[16/9] rounded-none overflow-hidden mb-2.5 bg-zinc-900 border border-zinc-700 relative flex items-center justify-center">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -578,22 +578,22 @@ export function Landing() {
                   </div>
 
                   {/* Normal Title */}
-                  <h3 className="font-bold text-sm lg:text-base text-black mb-1 tracking-tight uppercase">
+                  <h3 className="font-bold text-sm lg:text-base text-white mb-1 tracking-tight uppercase">
                     {item.title}
                   </h3>
 
                   {/* Normal Description Text */}
-                  <p className="text-[10px] lg:text-[11px] text-slate-900 leading-tight font-normal mb-3">
+                  <p className="text-[10px] lg:text-[11px] text-zinc-300 leading-tight font-normal mb-3">
                     {item.description}
                   </p>
                 </div>
 
                 {/* Bottom Action Link - Rectangular Button */}
-                <div className="pt-2 border-t border-black/20 mt-auto">
+                <div className="pt-2 border-t border-zinc-800 mt-auto">
                   <Link
                     to={item.link}
                     onClick={(e) => handleProtectedNavigation(e, item.link, item.title)}
-                    className="w-full py-1.5 px-3 rounded-none bg-black hover:bg-zinc-800 text-white font-bold text-[9px] lg:text-[10px] flex items-center justify-between transition-colors uppercase"
+                    className="w-full py-1.5 px-3 rounded-none bg-yellow-400 hover:bg-yellow-300 text-black font-extrabold text-[9px] lg:text-[10px] flex items-center justify-between transition-colors uppercase border border-black"
                   >
                     <span>{item.cta}</span>
                     <ArrowRight className="w-3 h-3" />
@@ -635,34 +635,34 @@ export function Landing() {
             {campusAdvantages.map((item) => (
               <div
                 key={item.id}
-                className="bg-[#141416] rounded-none border border-zinc-800 p-4 flex flex-col justify-between min-h-[200px] shadow-sm hover:border-zinc-600 transition-colors"
+                className="bg-white rounded-none border border-slate-300 p-4 flex flex-col justify-between min-h-[200px] shadow-sm hover:border-slate-500 transition-colors"
               >
                 <div>
                   {/* Clean Title with Standard Icon */}
                   <div className="flex items-center gap-2 mb-1">
-                    <item.icon className="w-3.5 h-3.5 text-white shrink-0" />
-                    <h3 className="font-bold text-xs sm:text-sm text-white uppercase">
+                    <item.icon className="w-3.5 h-3.5 text-slate-900 shrink-0" />
+                    <h3 className="font-bold text-xs sm:text-sm text-slate-900 uppercase">
                       {item.title}
                     </h3>
                   </div>
 
                   {/* Subtitle */}
-                  <p className="text-[9px] text-zinc-300 font-medium mb-1.5 uppercase">
+                  <p className="text-[9px] text-slate-500 font-semibold mb-1.5 uppercase">
                     {item.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-[10px] lg:text-[11px] text-zinc-400 font-normal leading-tight mb-2">
+                  <p className="text-[10px] lg:text-[11px] text-slate-600 font-normal leading-tight mb-2">
                     {item.description}
                   </p>
                 </div>
 
-                {/* Bottom Action Button - Rectangular White Button with Black Text */}
-                <div className="pt-2 border-t border-zinc-800 mt-auto">
+                {/* Bottom Action Button - Rectangular Black Button with White Text */}
+                <div className="pt-2 border-t border-slate-200 mt-auto">
                   <Link
                     to={item.link}
                     onClick={(e) => handleProtectedNavigation(e, item.link, item.title)}
-                    className="w-full py-1.5 px-3 rounded-none bg-white hover:bg-zinc-200 text-black font-bold text-[9px] flex items-center justify-between transition-colors shadow-xs group/btn uppercase"
+                    className="w-full py-1.5 px-3 rounded-none bg-black hover:bg-zinc-800 text-white font-bold text-[9px] flex items-center justify-between transition-colors shadow-xs group/btn uppercase"
                   >
                     <span>{item.actionLabel}</span>
                     <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-1" />

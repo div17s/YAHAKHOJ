@@ -14,6 +14,7 @@ import { Roommates } from './pages/Roommates';
 import { Seniors } from './pages/Seniors';
 import { Internships } from './pages/Internships';
 import { Events } from './pages/Events';
+import { Roadmaps } from './pages/Roadmaps';
 import { Support } from './pages/Support';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="seniors" element={<GatedRoute><Seniors /></GatedRoute>} />
             <Route path="internships" element={<GatedRoute><Internships /></GatedRoute>} />
             <Route path="events" element={<GatedRoute><Events /></GatedRoute>} />
+            <Route path="roadmaps" element={<GatedRoute><Roadmaps /></GatedRoute>} />
             <Route path="support" element={<Support />} />
             <Route path="terms" element={<Terms />} />
             <Route path="privacy" element={<Privacy />} />

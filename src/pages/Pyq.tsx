@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Search, Filter, Download, Star, FileText, Upload, ShieldCheck, X } from 'lucide-react';
+import { Search, Filter, Download, Star, FileText, Upload, GraduationCap, X, ExternalLink } from 'lucide-react';
 import { MOCK_PYQS, MOCK_DEPARTMENTS, MOCK_COLLEGES } from '../data';
 import { motion } from 'motion/react';
 import { useSEO } from '../hooks/useSEO';
@@ -16,8 +16,19 @@ export function Pyq() {
   const isLoading = useSimulateLoading();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('all');
+  const [selectedCollege, setSelectedCollege] = useState('all');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showGlobal, setShowGlobal] = useState(false);
+  const [downloadTracker, setDownloadTracker] = useState<Record<string, number>>({});
+
+  const handleDownload = (docId: string, url?: string, title?: string) => {
+    setDownloadTracker(prev => ({
+      ...prev,
+      [docId]: (prev[docId] || 0) + 1
+    }));
+    const targetUrl = url || `https://www.google.com/search?q=${encodeURIComponent((title || '') + ' PDF download official university')}`;
+    window.open(targetUrl, '_blank', 'noopener,noreferrer');
+  };
 
   const userCollege = MOCK_COLLEGES.find(c => c.id === user?.collegeId);
   const userDepartment = MOCK_DEPARTMENTS.find(d => d.id === user?.departmentId);
@@ -25,7 +36,10 @@ export function Pyq() {
   const filteredDocs = useMemo(() => {
     let docs = MOCK_PYQS;
     
-    if (user?.collegeId && !showGlobal) {
+    // Strict college filtering: LNCT shows ONLY LNCT, TIT shows ONLY TIT
+    if (selectedCollege !== 'all') {
+      docs = docs.filter(doc => doc.collegeId === selectedCollege);
+    } else if (user?.collegeId && !showGlobal) {
       docs = docs.filter(doc => doc.collegeId === user.collegeId);
     }
 
@@ -37,12 +51,13 @@ export function Pyq() {
       const q = searchQuery.toLowerCase();
       docs = docs.filter(doc => 
         doc.title.toLowerCase().includes(q) || 
-        doc.subject.toLowerCase().includes(q)
+        doc.subject.toLowerCase().includes(q) ||
+        doc.tags.some(t => t.toLowerCase().includes(q))
       );
     }
     
     return docs;
-  }, [user?.collegeId, showGlobal, selectedCourse, searchQuery]);
+  }, [user?.collegeId, showGlobal, selectedCollege, selectedCourse, searchQuery]);
 
   // If showing global, show all departments. If scoped, show only college departments.
   const availableCourses = (user?.collegeId && !showGlobal) 
@@ -67,7 +82,7 @@ export function Pyq() {
       {user?.collegeId && (
         <div className="mb-6 flex items-center justify-between bg-white border-2 border-black p-4">
           <div className="flex items-center gap-2 text-black">
-            <ShieldCheck className="w-5 h-5" />
+            <GraduationCap className="w-5 h-5" />
             <span className="font-bold text-sm uppercase">
               {showGlobal ? 'Showing all colleges' : `Showing results for ${userCollege?.name}`}
             </span>
@@ -92,7 +107,24 @@ export function Pyq() {
             className="w-full pl-10 pr-4 py-2 bg-white border border-black focus:outline-none text-sm"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <select 
+            className="px-4 py-2 bg-white border border-black focus:outline-none text-xs font-bold uppercase cursor-pointer"
+            value={selectedCollege}
+            onChange={(e) => {
+              setSelectedCollege(e.target.value);
+              if (e.target.value !== 'all') {
+                setShowGlobal(true);
+              }
+            }}
+          >
+            <option value="all">
+              {userCollege && !showGlobal ? `My College (${userCollege.name})` : 'All Colleges'}
+            </option>
+            {MOCK_COLLEGES.map(col => (
+              <option key={col.id} value={col.id}>{col.name}</option>
+            ))}
+          </select>
           <select 
             className="px-4 py-2 bg-white border border-black focus:outline-none text-xs font-bold uppercase cursor-pointer"
             value={selectedCourse}
@@ -107,44 +139,67 @@ export function Pyq() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredDocs.map((doc) => (
-          <div
-            key={doc.id}
-            className="bg-white border-2 border-black p-5 flex flex-col hover:bg-gray-50 transition-colors"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-2 border border-black bg-white text-black">
-                <FileText className="w-5 h-5" />
-              </div>
-              <div className="bg-black text-white px-2 py-1 text-[10px] font-bold">
-                {doc.rating} ★
-              </div>
-            </div>
-            
-            <div className="mb-4">
-              <span className="text-[10px] font-bold uppercase text-gray-500">{doc.subject}</span>
-              <h3 className="font-bold text-base text-black mt-1 line-clamp-2 uppercase">{doc.title}</h3>
-            </div>
-            
-            <div className="flex flex-wrap gap-1.5 mb-6">
-              {doc.tags.map(tag => (
-                <span key={tag} className="text-[9px] font-bold px-2 py-0.5 bg-gray-100 border border-gray-300 text-gray-700 uppercase">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            
-            <div className="mt-auto pt-3 border-t border-gray-200 flex items-center justify-between">
-              <div className="text-[10px] text-gray-600">
-                By <span className="font-bold text-black uppercase">{doc.authorName}</span>
-              </div>
-              <button className="flex items-center gap-1 text-black font-bold text-xs uppercase">
-                <Download className="w-3.5 h-3.5" />
-                <span>{doc.downloadCount}</span>
-              </button>
-            </div>
+        {filteredDocs.length === 0 ? (
+          <div className="col-span-full bg-white border-2 border-black p-8 text-center my-6">
+            <h3 className="font-bold text-lg uppercase text-black mb-2">FILE NOT FOUND</h3>
+            <p className="text-sm text-gray-600 max-w-sm mx-auto font-medium">
+              Study material for this college is currently not listed. New papers are being uploaded daily!
+            </p>
           </div>
-        ))}
+        ) : (
+          filteredDocs.map((doc) => {
+            const matchedCollege = MOCK_COLLEGES.find(c => c.id === doc.collegeId);
+            return (
+              <div
+                key={doc.id}
+                className="bg-white border-2 border-black p-5 flex flex-col justify-between hover:bg-gray-50 transition-colors"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="p-2 border border-black bg-white text-black">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div className="bg-black text-white px-2 py-1 text-[10px] font-bold">
+                      {doc.rating} ★
+                    </div>
+                  </div>
+                
+                  <div className="mb-3">
+                    <span className="text-[10px] font-bold uppercase text-gray-500">{doc.subject}</span>
+                    <h3 className="font-bold text-base text-black mt-1 line-clamp-2 uppercase">{doc.title}</h3>
+                    {matchedCollege && (
+                      <span className="text-[10px] font-bold text-slate-700 uppercase block mt-1">
+                        🏛️ {matchedCollege.name}
+                      </span>
+                    )}
+                  </div>
+                
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {doc.tags.map(tag => (
+                      <span key={tag} className="text-[9px] font-bold px-2 py-0.5 bg-gray-100 border border-gray-300 text-gray-700 uppercase">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="pt-3 border-t border-gray-200 flex items-center justify-between">
+                  <div className="text-[10px] text-gray-600">
+                    By <span className="font-bold text-black uppercase">{doc.authorName}</span>
+                  </div>
+                  <button 
+                    onClick={() => handleDownload(doc.id, doc.downloadUrl, doc.title)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-black hover:bg-zinc-800 text-white font-bold text-xs uppercase rounded-none transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+                    title="Open Exact Paper / PDF Page"
+                  >
+                    <Download className="w-3.5 h-3.5 shrink-0" />
+                    <span>Open Paper / PDF ({doc.downloadCount + (downloadTracker[doc.id] || 0)})</span>
+                    <ExternalLink className="w-3 h-3 ml-0.5 shrink-0" />
+                  </button>
+                </div>
+              </div>
+            );
+          }))}
       </div>
 
       {/* Upload Modal (Mock) */}

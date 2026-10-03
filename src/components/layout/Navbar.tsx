@@ -28,8 +28,8 @@ export function Navbar() {
   // Navigation items requested by the user: Home, College, PYQs, Roommates, Rooms & PG, City Guide, Community
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'College', path: '/onboarding' },
     { name: 'PYQs', path: '/pyq' },
+    { name: 'Roadmaps', path: '/roadmaps' },
     { name: 'Roommates', path: '/roommates' },
     { name: 'Rooms & PG', path: '/rooms' },
     { name: 'City Guide', path: '/events' },

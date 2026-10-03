@@ -8,11 +8,13 @@ import { createServer } from 'vite';
 async function startServer() {
   const app = express();
 
-  // 1. Security Headers - Temporarily disabled
-  // app.use(helmet()); 
+  // 1. Security Headers
+  app.use(helmet({
+    contentSecurityPolicy: false, // Relax CSP for dev
+  })); 
   
-  // 2. Strict CORS - Temporarily disabled
-  // app.use(cors({ origin: process.env.ALLOWED_ORIGIN || 'https://ais-dev-735sysovptq5mmfq3b6owx-744800743425.asia-east1.run.app' })); 
+  // 2. CORS
+  app.use(cors()); // Allow all in dev
   
   app.use(express.json({ limit: '10kb' }));
 
@@ -56,8 +58,8 @@ async function startServer() {
   });
   app.use(vite.middlewares);
 
-  const port = process.env.PORT || 3000;
-  const server = app.listen(Number(port), '0.0.0.0', () => console.log(`Server running on port ${port}`));
+  const port = 3000;
+  const server = app.listen(port, '0.0.0.0', () => console.log(`Server running on port ${port}`));
   server.on('error', (e) => console.error('Server error:', e));
 }
 

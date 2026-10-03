@@ -35,7 +35,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-sm text-slate-600 mb-4 leading-relaxed font-normal">
-              Delhi's premier student platform for college life. Verified PYQs, study notes, student rooms & PGs, roommates, and alumni network.
+              India's premier student platform for college life. Verified PYQs, study notes, student rooms & PGs, roommates, and alumni network across 25+ top universities.
             </p>
           </div>
           

@@ -55,46 +55,54 @@ export function Roommates() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredRoommates.map((profile) => (
-          <div
-            key={profile.id}
-            className="bg-white border-2 border-black p-5 flex flex-col hover:bg-gray-50 transition-colors relative"
-          >
-            <div className="absolute top-2 right-2 bg-black text-white text-[10px] font-bold px-2 py-0.5 uppercase">
-              {profile.compatibility}% Match
-            </div>
-
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 border-2 border-black flex items-center justify-center text-black font-bold text-lg bg-gray-50">
-                {profile.name.charAt(0)}
-              </div>
-              <div>
-                <h3 className="font-bold text-base text-black uppercase">{profile.name}</h3>
-                <p className="text-[10px] font-bold text-gray-500 uppercase line-clamp-1">{profile.department}</p>
-              </div>
-            </div>
-            
-            <p className="text-xs text-gray-700 mb-4 line-clamp-2 italic font-medium">"{profile.bio}"</p>
-            
-            <div className="bg-gray-50 border border-black p-3 mb-4 space-y-2">
-              <div className="flex justify-between text-[10px] font-bold uppercase">
-                <span className="text-gray-500">Budget</span>
-                <span className="text-black">₹{profile.budget.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-[10px] font-bold uppercase">
-                <span className="text-gray-500">Sleep</span>
-                <span className="text-black">{profile.lifestyle.sleep.replace('_', ' ')}</span>
-              </div>
-            </div>
-            
-            <button 
-              onClick={() => alert(`Request sent!`)}
-              className="w-full py-2 bg-black text-white text-[10px] font-bold uppercase hover:bg-gray-800 transition-colors"
-            >
-              Request to Connect
-            </button>
+        {filteredRoommates.length === 0 ? (
+          <div className="col-span-full bg-white border-2 border-black p-8 text-center my-6">
+            <h3 className="font-bold text-lg uppercase text-black mb-2">FILE NOT FOUND</h3>
+            <p className="text-sm text-gray-600 max-w-sm mx-auto font-medium">
+              No roommate profiles are currently listed for this campus yet. Registration opens soon!
+            </p>
           </div>
-        ))}
+        ) : (
+          filteredRoommates.map((profile) => (
+            <div
+              key={profile.id}
+              className="bg-white border-2 border-black p-5 flex flex-col hover:bg-gray-50 transition-colors relative"
+            >
+              <div className="absolute top-2 right-2 bg-black text-white text-[10px] font-bold px-2 py-0.5 uppercase">
+                {profile.compatibility}% Match
+              </div>
+
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 border-2 border-black flex items-center justify-center text-black font-bold text-lg bg-gray-50">
+                  {profile.name.charAt(0)}
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-black uppercase">{profile.name}</h3>
+                  <p className="text-[10px] font-bold text-gray-500 uppercase line-clamp-1">{profile.department}</p>
+                </div>
+              </div>
+              
+              <p className="text-xs text-gray-700 mb-4 line-clamp-2 italic font-medium">"{profile.bio}"</p>
+              
+              <div className="bg-gray-50 border border-black p-3 mb-4 space-y-2">
+                <div className="flex justify-between text-[10px] font-bold uppercase">
+                  <span className="text-gray-500">Budget</span>
+                  <span className="text-black">₹{profile.budget.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-[10px] font-bold uppercase">
+                  <span className="text-gray-500">Sleep</span>
+                  <span className="text-black">{profile.lifestyle.sleep.replace('_', ' ')}</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => alert(`Request sent!`)}
+                className="w-full py-2 bg-black text-white text-[10px] font-bold uppercase hover:bg-gray-800 transition-colors"
+              >
+                Request to Connect
+              </button>
+            </div>
+          )))}
       </div>
     </div>
   );
