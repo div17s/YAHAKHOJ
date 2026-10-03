@@ -1,0 +1,6 @@
+{
+  "name": "Yaha Khoj",
+  "description": "Yaha Khoj is Delhi's premier student startup platform. Access college PYQs, study notes, alumni networks, find rooms, roommates, and city guides seamlessly.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
